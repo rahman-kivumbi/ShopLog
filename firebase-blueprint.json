@@ -1,0 +1,238 @@
+{
+  "entities": {
+    "Business": {
+      "title": "Business",
+      "description": "Represents an individual business entity owned by the user (e.g. Phones & Electronics shop, popcorn machine).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "type": { "type": "string", "enum": ["shop", "kiosk", "machine", "other"] },
+        "currency": { "type": "string", "maxLength": 10 },
+        "color": { "type": "string", "maxLength": 30 },
+        "ownerId": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "type", "currency", "ownerId"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "A catalog product item belonging to a business.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "brand": { "type": "string", "maxLength": 100 },
+        "model": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 100 },
+        "sizeOrStorage": { "type": "string", "maxLength": 60 },
+        "color": { "type": "string", "maxLength": 50 },
+        "variant": { "type": "string", "maxLength": 60 },
+        "condition": { "type": "string", "enum": ["New", "Used", "Refurbished"] },
+        "barcode": { "type": "string", "maxLength": 100 },
+        "purchasePrice": { "type": "number" },
+        "sellingPrice": { "type": "number" },
+        "supplierId": { "type": "string" },
+        "lowStockThreshold": { "type": "number" },
+        "warrantyMonths": { "type": "number" },
+        "isSerialized": { "type": "boolean" },
+        "currentStock": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "ownerId", "name", "category", "purchasePrice", "sellingPrice"]
+    },
+    "InventoryUnit": {
+      "title": "InventoryUnit",
+      "description": "A serialized single unit (e.g. phone with IMEI 1 & 2 or device serial number).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "productId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "imei": { "type": "string", "maxLength": 20 },
+        "imei2": { "type": "string", "maxLength": 20 },
+        "serialNumber": { "type": "string", "maxLength": 60 },
+        "status": { "type": "string", "enum": ["in_stock", "sold", "returned", "damaged", "reserved"] },
+        "purchasePrice": { "type": "number" },
+        "sellingPrice": { "type": "number" },
+        "supplierId": { "type": "string" },
+        "saleId": { "type": "string" },
+        "soldAt": { "type": "string" },
+        "warrantyEndDate": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "productId", "ownerId", "status"]
+    },
+    "StockMovement": {
+      "title": "StockMovement",
+      "description": "Stock audit log entry representing every stock in, out, or adjustment.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "productId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "type": { "type": "string", "enum": ["in", "out", "adjustment"] },
+        "reason": { "type": "string", "maxLength": 60 },
+        "quantity": { "type": "number" },
+        "costPerUnit": { "type": "number" },
+        "supplierId": { "type": "string" },
+        "referenceId": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "imei": { "type": "string", "maxLength": 30 },
+        "date": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "productId", "ownerId", "type", "quantity"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "Completed or credit point of sale transaction.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "invoiceNumber": { "type": "string", "maxLength": 50 },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 100 },
+        "customerPhone": { "type": "string", "maxLength": 30 },
+        "total": { "type": "number" },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "costTotal": { "type": "number" },
+        "profit": { "type": "number" },
+        "amountPaid": { "type": "number" },
+        "paymentMethod": { "type": "string", "maxLength": 30 },
+        "paymentStatus": { "type": "string", "enum": ["paid", "partial", "pending"] },
+        "notes": { "type": "string", "maxLength": 500 },
+        "warrantyEndDate": { "type": "string" },
+        "date": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "ownerId", "invoiceNumber", "total", "amountPaid", "paymentMethod"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Customer record with purchase totals, debts, and contact details.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "totalSpent": { "type": "number" },
+        "outstandingBalance": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name", "phone"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Supplier contact, purchasing totals, and payable balances.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "contactPerson": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "totalPurchased": { "type": "number" },
+        "balanceOwed": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "name"]
+    },
+    "PurchaseOrder": {
+      "title": "PurchaseOrder",
+      "description": "Purchase order created for a supplier.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "supplierId": { "type": "string" },
+        "supplierName": { "type": "string", "maxLength": 100 },
+        "orderNumber": { "type": "string", "maxLength": 50 },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["draft", "ordered", "received", "cancelled"] },
+        "notes": { "type": "string", "maxLength": 500 },
+        "date": { "type": "string" },
+        "receivedAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "businessId", "ownerId", "supplierId", "orderNumber", "status"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Operational expense recorded per business or shared.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "isShared": { "type": "boolean" },
+        "category": { "type": "string", "maxLength": 60 },
+        "amount": { "type": "number" },
+        "description": { "type": "string", "maxLength": 200 },
+        "isPersonal": { "type": "boolean" },
+        "isRecurring": { "type": "boolean" },
+        "recurringFrequency": { "type": "string", "enum": ["monthly", "weekly", "yearly"] },
+        "date": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "ownerId", "amount", "category", "description"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/businesses/{businessId}": {
+      "schema": "#/entities/Business",
+      "description": "User businesses (shop, kiosk, machine, etc.)"
+    },
+    "/users/{userId}/products/{productId}": {
+      "schema": "#/entities/Product",
+      "description": "Catalog products per user"
+    },
+    "/users/{userId}/inventoryUnits/{unitId}": {
+      "schema": "#/entities/InventoryUnit",
+      "description": "Serialized phone IMEI and device serial units"
+    },
+    "/users/{userId}/stockMovements/{movementId}": {
+      "schema": "#/entities/StockMovement",
+      "description": "Stock movement audit history (in, out, adjustment)"
+    },
+    "/users/{userId}/sales/{saleId}": {
+      "schema": "#/entities/Sale",
+      "description": "Completed point of sale records"
+    },
+    "/users/{userId}/customers/{customerId}": {
+      "schema": "#/entities/Customer",
+      "description": "Customer contacts and credit ledgers"
+    },
+    "/users/{userId}/suppliers/{supplierId}": {
+      "schema": "#/entities/Supplier",
+      "description": "Suppliers and payables"
+    },
+    "/users/{userId}/purchaseOrders/{orderId}": {
+      "schema": "#/entities/PurchaseOrder",
+      "description": "Supplier purchase orders"
+    },
+    "/users/{userId}/expenses/{expenseId}": {
+      "schema": "#/entities/Expense",
+      "description": "Business and shared expense records"
+    }
+  }
+}

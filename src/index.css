@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --font-syne: 'Syne', sans-serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Premium Obsidian & Warm Charcoal Palette */
+  --color-canvas-950: #090b10;
+  --color-canvas-900: #0f131a;
+  --color-canvas-850: #151a24;
+  --color-canvas-800: #1c2230;
+  --color-canvas-700: #252d3d;
+  --color-canvas-600: #333d52;
+
+  /* Classy Warm Brass / Champagne Gold Accent */
+  --color-gold-400: #e6c673;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b89324;
+  --color-gold-700: #947214;
+
+  /* Emerald Sage for Profits / In-Stock */
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+}
+
+:root {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Syne', sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.font-mono-numbers {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Touch & Mobile Optimizations */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Classy Subtle Surface Styling - No garish neon glow */
+.surface-card {
+  background: #131722;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.surface-card-elevated {
+  background: #171c2a;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+}
+
+.gold-accent-border {
+  border-color: rgba(212, 175, 55, 0.35);
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Ranks Shop Manager - Multi-Business Dubai POS & Stock",
+  "description": "Mobile-first, offline-first multi-business management, IMEI tracking, sales POS, inventory, and profit tracking for electronics and retail shops in Dubai.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all to prevent unwanted access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Per-user subcollections: Businesses, Products, Units, Movements, Sales, Customers, Suppliers, Orders, Expenses
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create, update, delete: if isOwner(userId);
+
+      // Businesses
+      match /businesses/{businessId} {
+        allow read, write: if isOwner(userId) && isValidId(businessId);
+      }
+
+      // Products
+      match /products/{productId} {
+        allow read, write: if isOwner(userId) && isValidId(productId);
+      }
+
+      // Serialized Inventory Units (IMEIs, serial numbers)
+      match /inventoryUnits/{unitId} {
+        allow read, write: if isOwner(userId) && isValidId(unitId);
+      }
+
+      // Stock movements
+      match /stockMovements/{movementId} {
+        allow read, write: if isOwner(userId) && isValidId(movementId);
+      }
+
+      // Sales
+      match /sales/{saleId} {
+        allow read, write: if isOwner(userId) && isValidId(saleId);
+      }
+
+      // Customers
+      match /customers/{customerId} {
+        allow read, write: if isOwner(userId) && isValidId(customerId);
+      }
+
+      // Suppliers
+      match /suppliers/{supplierId} {
+        allow read, write: if isOwner(userId) && isValidId(supplierId);
+      }
+
+      // Purchase orders
+      match /purchaseOrders/{orderId} {
+        allow read, write: if isOwner(userId) && isValidId(orderId);
+      }
+
+      // Expenses
+      match /expenses/{expenseId} {
+        allow read, write: if isOwner(userId) && isValidId(expenseId);
+      }
+
+      // App Settings & PIN
+      match /settings/{settingId} {
+        allow read, write: if isOwner(userId) && isValidId(settingId);
+      }
+    }
+
+    // Test connection endpoint for initial bootstrap validation
+    match /test/{docId} {
+      allow read, write: if isSignedIn();
+    }
+  }
+}
